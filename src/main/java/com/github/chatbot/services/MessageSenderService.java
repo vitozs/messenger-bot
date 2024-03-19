@@ -3,7 +3,7 @@ package com.github.chatbot.services;
 import com.github.chatbot.models.facebook.in.EventRequest;
 import com.github.chatbot.models.facebook.in.IdRequest;
 import com.github.chatbot.models.facebook.in.MessageRequest;
-import com.github.chatbot.models.facebook.out.MessageRequestResponse;
+import com.github.chatbot.models.facebook.out.MessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.BodyInserters;
@@ -34,16 +34,16 @@ public class MessageSenderService {
         sendPostRequest(buildResponseBody(psid, text));
     }
 
-    public MessageRequestResponse buildResponseBody(String psid, String userText){
+    public MessageResponse buildResponseBody(String psid, String userText){
         String botResponse = botResponseBuilderService.buildBotText(userText);
         String responseText = botResponse;
-        MessageRequestResponse messageRequestResponse = new MessageRequestResponse();
-        messageRequestResponse.setMessage(new MessageRequest(responseText));
-        messageRequestResponse.setRecipient(new IdRequest(psid));
-        return messageRequestResponse;
+        MessageResponse messageResponse = new MessageResponse();
+        messageResponse.setMessage(new MessageRequest(responseText));
+        messageResponse.setRecipient(new IdRequest(psid));
+        return messageResponse;
     }
 
-    public void sendPostRequest(MessageRequestResponse responseBody) throws URISyntaxException {
+    public void sendPostRequest(MessageResponse responseBody) throws URISyntaxException {
         final String PAGE_TOKEN = System.getenv("PAGE_TOKEN");
         WebClient client =  WebClient.builder()
                 .baseUrl("https://graph.facebook.com/v19.0/206424369230843")
