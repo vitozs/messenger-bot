@@ -1,10 +1,8 @@
 package com.github.chatbot.controllers;
 
-import com.github.chatbot.services.WebhookService;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.github.chatbot.models.facebook.in.EventRequest;
+import com.github.chatbot.services.MessageSenderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +15,7 @@ import java.util.Objects;
 public class WebhookController {
 
     @Autowired
-    public WebhookService webhookService;
+    public MessageSenderService messageSenderService;
     @GetMapping("/webhook")
     public ResponseEntity<String> teste(@RequestParam("hub.mode") String hub, @RequestParam("hub.challenge") String challange, @RequestParam("hub.verify_token") String token ){
         if(Objects.equals(token, "banana")){
@@ -27,11 +25,9 @@ public class WebhookController {
     }
 
     @PostMapping("/webhook")
-    public ResponseEntity<String> teste2(HttpEntity<String> request) throws IOException, URISyntaxException, InterruptedException {
-        String json = request.getBody();
-        JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
-        if(Objects.equals(jsonObject.get("object").getAsString(), "page" )){
-            webhookService.sendMessage(jsonObject);
+    public ResponseEntity<String> teste2(@RequestBody EventRequest request) throws IOException, URISyntaxException, InterruptedException {
+        if(Objects.equals(request.getObject(), "page" )){
+            messageSenderService.treatAndSendPostRequest(request);
             return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
