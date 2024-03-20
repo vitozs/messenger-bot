@@ -13,9 +13,10 @@ import java.net.URISyntaxException;
 
 @Service
 public class MessageSenderService {
-
     @Autowired
-    BotResponseBuilderService botResponseBuilderService;
+    private BotResponseBuilderService botResponseBuilderService;
+    private final String PAGE_TOKEN = System.getenv("PAGE_TOKEN");
+    private final String PAGE_ID = System.getenv("PAGE_ID");
     public void treatAndSendPostRequest(EventRequest request) throws URISyntaxException {
         String psid = request.getEntry()
                 .get(0)
@@ -33,20 +34,16 @@ public class MessageSenderService {
 
         sendPostRequest(buildResponseBody(psid, text));
     }
-
-    public MessageResponse buildResponseBody(String psid, String userText){
-        String botResponse = botResponseBuilderService.buildBotText(userText);
-        String responseText = botResponse;
+    private MessageResponse buildResponseBody(String psid, String userText){
+        String responseText = botResponseBuilderService.buildBotText(userText);
         MessageResponse messageResponse = new MessageResponse();
         messageResponse.setMessage(new MessageRequest(responseText));
         messageResponse.setRecipient(new IdRequest(psid));
         return messageResponse;
     }
-
-    public void sendPostRequest(MessageResponse responseBody) throws URISyntaxException {
-        final String PAGE_TOKEN = System.getenv("PAGE_TOKEN");
+    private void sendPostRequest(MessageResponse responseBody){
         WebClient client =  WebClient.builder()
-                .baseUrl("https://graph.facebook.com/v19.0/206424369230843")
+                .baseUrl("https://graph.facebook.com/v19.0/" + PAGE_ID)
                 .build();
 
         client.post()
@@ -61,4 +58,5 @@ public class MessageSenderService {
                     System.out.println("Resposta do servidor: " + response);
                 });
     }
+
 }
