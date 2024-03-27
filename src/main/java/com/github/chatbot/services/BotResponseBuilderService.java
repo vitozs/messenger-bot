@@ -1,5 +1,7 @@
 package com.github.chatbot.services;
 
+import com.github.chatbot.bot.Answare;
+import com.github.chatbot.bot.AnswaresCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,31 +11,17 @@ import java.util.regex.Pattern;
 @Service
 public class BotResponseBuilderService {
 
-    @Autowired
-    private BotConfigService botConfigService;
-    private  String userInput;
+    AnswaresCollection answaresCollection = new AnswaresCollection();
     public String buildBotText(String userText) {
-        String botText;
-        this.userInput = userText;
+        String botText = "Não entendi!";
 
-        if(hasPattern("\\b(?:oi|boa tarde|ola)\\b")){
-            botText = botConfigService.respondIfGreetings();
-        }else if(hasPattern("\\b(?:nome|chama)\\b")){
-            botText = botConfigService.respondIfName();
-        }else if(hasPattern("\\b(?:anos|idade)\\b")){
-            botText = botConfigService.respondIfAge();
-        } else if(hasPattern("\\b(?:tempo)\\b")){
-            botText = botConfigService.respondIfWeather();
-        }else{
-            botText = botConfigService.respondIfNoAlternative();
+        for(Answare answare : answaresCollection.getAnswares()){
+            if(answare.hasPattern(userText)){
+                botText = answare.generateResponse();
+            }
         }
 
         return botText;
-    }
-    private boolean hasPattern(String regex){
-        Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(this.userInput);
-        return matcher.find();
     }
 
 }
