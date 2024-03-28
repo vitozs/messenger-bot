@@ -10,11 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class DialogFlowController {
-    @Autowired
-    DialogFlowService dialogFlowService;
     @PostMapping("/dialog")
     ResponseEntity<?> dialogFlow(@RequestBody DialogBody queryResult){
-        return new ResponseEntity<>(dialogFlowService.checkIntentOfMessage(queryResult), HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
 
     }
 

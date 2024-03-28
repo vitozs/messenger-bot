@@ -8,7 +8,7 @@ import static com.github.chatbot.util.IntentMatcher.checkIntent;
 
 public class WeatherAnswareHandler implements AnswareStrategy {
 
-    private String intent = "weatherInformation";
+    private String intent = "requestWeather";
     private WeatherConsultingService weatherConsultingService = new WeatherConsultingService();
 
     @Override

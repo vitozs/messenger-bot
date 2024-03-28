@@ -20,7 +20,8 @@ public class BotResponseBuilderService {
         MessageResponse messageBody = buildRequestBody();
         String messageIntent = intent;
         String botAnsware = buildBotText(messageIntent);
-
+        messageBody.getMessage().setText(botAnsware);
+        messageBody.getRecipient().setId(psid);
         return messageBody;
     }
     private MessageResponse buildRequestBody(){
@@ -34,21 +35,11 @@ public class BotResponseBuilderService {
     public String buildBotText(String intentReturned) {
         String botText = "Não entendi!";
 
-        for(AnswareStrategy answare : answaresCollection.getAnswares()){
-            if(answare.hasPattern(intentReturned)){
-                botText = answare.generateResponse();
+        for(AnswareStrategy answerer : answaresCollection.getAnswares()){
+            if(answerer.hasPattern(intentReturned)){
+                botText = answerer.generateResponse();
             }
         }
         return botText;
-    }
-
-    public InputBody buildInputBodyForDialogFlow(String userText){
-        InputBody inputBody = new InputBody();
-        QueryInput queryInput = new QueryInput();
-
-        queryInput.setText(new Text());
-        queryInput.getText().setText(userText);
-        inputBody.setQueryInput(queryInput);
-        return inputBody;
     }
 }

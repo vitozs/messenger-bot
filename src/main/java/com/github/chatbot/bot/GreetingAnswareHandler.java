@@ -7,7 +7,7 @@ import java.util.Random;
 import static com.github.chatbot.util.IntentMatcher.checkIntent;
 
 public class GreetingAnswareHandler implements AnswareStrategy {
-    private final String intent = "\\b(?:oi|boa tarde|ola)\\b";
+    private final String intent = "greetings";
     private final List<String> GREETING = Arrays.asList(
             "Opa! Sou um bot do messager, me pergunta alguma coisa!",
             "Ola! Agradeco o contato! Fico a disponha de qualquer duvida",

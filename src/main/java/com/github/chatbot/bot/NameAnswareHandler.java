@@ -7,7 +7,7 @@ import java.util.Random;
 import static com.github.chatbot.util.IntentMatcher.checkIntent;
 
 public class NameAnswareHandler implements AnswareStrategy {
-    private final String intent = "\\b(?:nome|chama)\\b";
+    private final String intent = "name";
     private final List<String> NAME = Arrays.asList(
             "Me chamo Vitor!",
             "Opa, meu nome é Vitor",
