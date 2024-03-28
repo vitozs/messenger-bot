@@ -9,4 +9,6 @@ public class EntryRequest {
     private String id;
     private Long time;
     private List<MessagingRequest> messaging;
+
+
 }

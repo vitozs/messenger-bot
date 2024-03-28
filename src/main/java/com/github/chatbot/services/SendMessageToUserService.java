@@ -9,37 +9,28 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.net.URISyntaxException;
-
 @Service
-public class MessageSenderService {
+public class SendMessageToUserService {
     @Autowired
-    private BotResponseBuilderService botResponseBuilderService;
+    private DialogFlowService dialogFlowService;
     private final String PAGE_TOKEN = System.getenv("PAGE_TOKEN");
     private final String PAGE_ID = System.getenv("PAGE_ID");
-    public void treatAndSendPostRequest(EventRequest request) throws URISyntaxException {
-        String psid = request.getEntry()
-                .get(0)
-                .getMessaging()
-                .get(0)
-                .getSender()
-                .getId();
+    public void treatAndSendPostRequest(EventRequest request){
+        String psid = request.getPSID();
+        String text = request.getUserMessage();
 
-        String text = request.getEntry()
-                .get(0)
-                .getMessaging()
-                .get(0)
-                .getMessage()
-                .getText();
-
-        sendPostRequest(buildResponseBody(psid, text));
+        sendPostRequest(buildRequestBody(psid, text));
     }
-    private MessageResponse buildResponseBody(String psid, String userText){
-        String responseText = botResponseBuilderService.buildBotText(userText);
+    private MessageResponse buildRequestBody(String psid, String userText){
+        String responseText = getBotResponse(userText);
         MessageResponse messageResponse = new MessageResponse();
+
         messageResponse.setMessage(new MessageRequest(responseText));
         messageResponse.setRecipient(new IdRequest(psid));
         return messageResponse;
+    }
+    private String getBotResponse(String userText){
+        return dialogFlowService.getDialogFlowResponseMessage(userText);
     }
     private void sendPostRequest(MessageResponse responseBody){
         WebClient client =  WebClient.builder()

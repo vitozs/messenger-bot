@@ -1,27 +1,30 @@
 package com.github.chatbot.services;
 
+import com.github.chatbot.models.dialogFlow.out.Fulillment;
 import com.github.chatbot.models.wheater.out.WeatherBodyResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 @Service
 public class WeatherConsultingService {
-    private final String CITY_ID = System.getenv("CITY_ID");
     private final String WEATHER_TOKEN = System.getenv("WEATHER_TOKEN");
-    public WeatherBodyResponse consultWeatherByCityId(){
+    public WeatherBodyResponse consultWeatherByCity(String city){
         WebClient client =  WebClient.builder()
-                .baseUrl("http://apiadvisor.climatempo.com.br/api/v1/weather/locale/" + CITY_ID)
+                .baseUrl("https://api.openweathermap.org/data/2.5/")
                 .build();
 
-        WeatherBodyResponse weather = client.get()
+        ResponseEntity<WeatherBodyResponse> weather = client.get()
                 .uri(uriBuilder -> uriBuilder
-                        .path("/current")
-                        .queryParam("token", WEATHER_TOKEN )
+                        .path("/weather")
+                        .queryParam("q", city)
+                        .queryParam("appid", WEATHER_TOKEN )
                         .build())
                 .retrieve()
-                .bodyToMono(WeatherBodyResponse.class)
+                .toEntity(WeatherBodyResponse.class)
                 .block();
-        return weather;
+        return weather.getBody();
     }
+
 }
