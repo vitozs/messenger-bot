@@ -18,10 +18,9 @@ public class WeatherAnswareHandler implements AnswareStrategy {
 
     @Override
     public String generateResponse() {
-        WeatherBodyResponse body = weatherConsultingService.consultWeatherByCity("poa");
+        //WeatherBodyResponse body = weatherConsultingService.consultWeatherByCity("poa");
         //WeatherDataResponse weatherData = body.getData();
 
-        return "Cidade: " + body.getName() + "\n" +
-                "Condicao: " ; //weatherData.getCondition();
+        return "TEMPO";
     }
 }

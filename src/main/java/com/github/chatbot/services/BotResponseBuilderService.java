@@ -15,13 +15,12 @@ import org.springframework.stereotype.Service;
 public class BotResponseBuilderService {
 
     AnswaresCollection answaresCollection = new AnswaresCollection();
-    @Autowired
-    SendDialogFlowRequestService sendDialogFlowRequestService;
 
-    public MessageResponse build(String psid, String text){
+    public MessageResponse build(String psid, String text, String intent){
         MessageResponse messageBody = buildRequestBody();
-        String messageIntent = checkIntentOfUserText(text);
+        String messageIntent = intent;
         String botAnsware = buildBotText(messageIntent);
+
         return messageBody;
     }
     private MessageResponse buildRequestBody(){
@@ -40,14 +39,9 @@ public class BotResponseBuilderService {
                 botText = answare.generateResponse();
             }
         }
-
         return botText;
     }
 
-    public String checkIntentOfUserText(String userText){
-        InputBody inputBody = buildInputBodyForDialogFlow(userText);
-        return sendDialogFlowRequestService.sendPostRequestAndGetResponse(inputBody);
-    }
     public InputBody buildInputBodyForDialogFlow(String userText){
         InputBody inputBody = new InputBody();
         QueryInput queryInput = new QueryInput();
