@@ -40,7 +40,7 @@ public class WeatherInformationAnswareHandler implements AnswareStrategy {
             String date = getDate(queryResult.getParameters());
             WeatherBody weatherBody = weatherConsultingService.getWeatherConditions(city, date);
 
-            return "Em " + city + ", a temperatura máxima atinge " + weatherBody.getMaxTemperature() +
+            return "Em " + city + ", no dia " + date + " a temperatura máxima atinge " + weatherBody.getMaxTemperature() +
                     " e mínima de " + weatherBody.getMinTemperature() +
                     ", tendo ventos com velocidade média de " + weatherBody.getWindSpeed() + " m/s" ;
         }catch (Exception e){
