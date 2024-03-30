@@ -1,4 +1,6 @@
-package com.github.chatbot.bot;
+package com.github.chatbot.answares;
+
+import com.github.chatbot.strategies.AnswareStrategy;
 
 import java.util.Arrays;
 import java.util.List;
@@ -6,12 +8,12 @@ import java.util.Random;
 
 import static com.github.chatbot.util.IntentMatcher.checkIntent;
 
-public class NameAnswareHandler implements AnswareStrategy {
-    private final String intent = "name";
-    private final List<String> NAME = Arrays.asList(
-            "Me chamo Vitor!",
-            "Opa, meu nome é Vitor",
-            "Vitor é o meu nome"
+public class AgeAnswareHandler implements AnswareStrategy {
+    private final String intent = "age";
+    private final List<String> AGE = Arrays.asList(
+            "Eu tenho 18 anos",
+            "Claro, eu tenho 18 anos",
+            "Tenho 18 anos"
     );
 
     @Override
@@ -27,6 +29,6 @@ public class NameAnswareHandler implements AnswareStrategy {
     @Override
     public String generateResponse(String userText) {
         Random rand = new Random();
-        return NAME.get(rand.nextInt(3));
+        return AGE.get(rand.nextInt(3));
     }
 }

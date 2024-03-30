@@ -1,4 +1,6 @@
-package com.github.chatbot.bot;
+package com.github.chatbot.answares;
+
+import com.github.chatbot.strategies.AnswareStrategy;
 
 import java.util.Arrays;
 import java.util.List;

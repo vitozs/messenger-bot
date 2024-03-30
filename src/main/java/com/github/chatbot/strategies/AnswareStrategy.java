@@ -1,4 +1,4 @@
-package com.github.chatbot.bot;
+package com.github.chatbot.strategies;
 
 public interface AnswareStrategy {
     public void setUserText(String userText);
