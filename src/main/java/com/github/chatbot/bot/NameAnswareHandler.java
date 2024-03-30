@@ -13,13 +13,19 @@ public class NameAnswareHandler implements AnswareStrategy {
             "Opa, meu nome é Vitor",
             "Vitor é o meu nome"
     );
+
+    @Override
+    public void setUserText(String userText) {
+
+    }
+
     @Override
     public boolean hasPattern(String intentReturned){
         return checkIntent(intent, intentReturned);
     }
 
     @Override
-    public String generateResponse() {
+    public String generateResponse(String userText) {
         Random rand = new Random();
         return NAME.get(rand.nextInt(3));
     }

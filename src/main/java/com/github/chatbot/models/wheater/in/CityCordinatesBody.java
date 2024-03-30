@@ -1,10 +1,10 @@
-package com.github.chatbot.models.wheater.out;
+package com.github.chatbot.models.wheater.in;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
-
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
-public class Sys {
-    private String country;
+public class CityCordinatesBody {
+    private Long lon;
+    private Long lat;
 }

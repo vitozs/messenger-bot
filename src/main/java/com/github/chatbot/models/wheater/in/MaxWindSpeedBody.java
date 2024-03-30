@@ -1,10 +1,11 @@
-package com.github.chatbot.models.wheater.out;
+package com.github.chatbot.models.wheater.in;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+
 @Data
-public class Main {
-    private double temp;
+public class MaxWindSpeedBody {
+    private double speed;
 }

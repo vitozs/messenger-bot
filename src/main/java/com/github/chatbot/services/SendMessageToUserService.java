@@ -8,6 +8,7 @@ import com.github.chatbot.models.facebook.out.MessageResponse;
 import com.github.chatbot.util.DetectIntentTexts;
 import com.github.chatbot.util.IntentMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -18,13 +19,18 @@ import java.io.IOException;
 public class SendMessageToUserService {
     @Autowired
     private BotResponseBuilderService botResponseBuilderService;
-    private final String PAGE_TOKEN = System.getenv("PAGE_TOKEN");
-    private final String PAGE_ID = System.getenv("PAGE_ID");
+
+    @Autowired
+    private IntentHandlerService intentHandlerService;
+
+    @Value("${facebook.apikey}")
+    private String PAGE_TOKEN;
+    @Value("${facebook.page.id}")
+    private String PAGE_ID;
     public void treatAndSendPostRequest(EventRequest request) throws IOException {
         String psid = request.getPSID();
         String text = request.getUserMessage();
-        String intent = DetectIntentTexts.getIntent(text);
-        MessageResponse response = botResponseBuilderService.build(psid, text, intent);
+        MessageResponse response = botResponseBuilderService.build(psid, text);
         sendPostRequest(response);
     }
 

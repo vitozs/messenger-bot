@@ -7,8 +7,9 @@ public class AnswaresCollection {
     private List<AnswareStrategy> answareStrategies = Arrays.asList(
             new AgeAnswareHandler(),
             new GreetingAnswareHandler(),
-            new WeatherAnswareHandler(),
-            new NameAnswareHandler()
+            new RequestWeatherAnswareHandler(),
+            new NameAnswareHandler(),
+            new WeatherInformationAnswareHandler()
     );
 
     public List<AnswareStrategy> getAnswares(){

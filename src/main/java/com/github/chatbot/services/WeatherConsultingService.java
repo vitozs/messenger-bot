@@ -1,30 +1,56 @@
 package com.github.chatbot.services;
 
-import com.github.chatbot.models.dialogFlow.out.Fulillment;
-import com.github.chatbot.models.wheater.out.WeatherBodyResponse;
+import com.github.chatbot.models.wheater.in.CityCordinatesBody;
+import com.github.chatbot.models.wheater.in.WeatherBody;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
+
+import java.util.List;
+
 @Service
 public class WeatherConsultingService {
-    private final String WEATHER_TOKEN = System.getenv("WEATHER_TOKEN");
-    public WeatherBodyResponse consultWeatherByCity(String city){
+    @Value("${weather.token}")
+    private String WEATHER_TOKEN = "e18840b3d35e4327d78997c36be4513a";
+    public WeatherBody getWeatherConditions(String city, String date){
+        System.out.println(WEATHER_TOKEN);
+        CityCordinatesBody cityCordinates = getCordinatesOfCity(city);
+        Long lon = cityCordinates.getLon();
+        Long lat = cityCordinates.getLat();
+
         WebClient client =  WebClient.builder()
-                .baseUrl("https://api.openweathermap.org/data/2.5/")
+                .baseUrl("https://api.openweathermap.org/data/3.0/onecall/")
                 .build();
 
-        ResponseEntity<WeatherBodyResponse> weather = client.get()
+        ResponseEntity<WeatherBody> weather = client.get()
                 .uri(uriBuilder -> uriBuilder
-                        .path("/weather")
+                        .path("/day_summary")
+                        .queryParam("lon", lon)
+                        .queryParam("lat", lat)
+                        .queryParam("date", date)
+                        .queryParam("appid", WEATHER_TOKEN)
+                        .build())
+                .retrieve()
+                .toEntity(WeatherBody.class)
+                .block();
+        return weather.getBody();
+    }
+    public CityCordinatesBody getCordinatesOfCity(String city){
+        System.out.println(WEATHER_TOKEN);
+        WebClient client =  WebClient.builder()
+                .baseUrl("http://api.openweathermap.org/geo/1.0/")
+                .build();
+
+        ResponseEntity<List<CityCordinatesBody>> coordinates = client.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/direct")
                         .queryParam("q", city)
                         .queryParam("appid", WEATHER_TOKEN )
                         .build())
                 .retrieve()
-                .toEntity(WeatherBodyResponse.class)
+                .toEntityList(CityCordinatesBody.class)
                 .block();
-        return weather.getBody();
+        return coordinates.getBody().get(0);
     }
-
 }
