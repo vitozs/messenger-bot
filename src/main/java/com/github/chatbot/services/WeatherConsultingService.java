@@ -14,7 +14,6 @@ public class WeatherConsultingService {
     @Value("${weather.token}")
     private String WEATHER_TOKEN = "e18840b3d35e4327d78997c36be4513a";
     public WeatherBody getWeatherConditions(String city, String date){
-        System.out.println(WEATHER_TOKEN);
         CityCordinatesBody cityCordinates = getCordinatesOfCity(city);
         Long lon = cityCordinates.getLon();
         Long lat = cityCordinates.getLat();
@@ -29,6 +28,7 @@ public class WeatherConsultingService {
                         .queryParam("lon", lon)
                         .queryParam("lat", lat)
                         .queryParam("date", date)
+                        .queryParam("units", "metric")
                         .queryParam("appid", WEATHER_TOKEN)
                         .build())
                 .retrieve()
@@ -37,7 +37,6 @@ public class WeatherConsultingService {
         return weather.getBody();
     }
     public CityCordinatesBody getCordinatesOfCity(String city){
-        System.out.println(WEATHER_TOKEN);
         WebClient client =  WebClient.builder()
                 .baseUrl("http://api.openweathermap.org/geo/1.0/")
                 .build();
