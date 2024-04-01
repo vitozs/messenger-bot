@@ -12,7 +12,6 @@ import java.io.IOException;
 
 public class DetectIntentTexts {
 
-    // DialogFlow API Detect Intent sample with text inputs.
     public static QueryResult getDialogFlowResponse(String text) throws IOException, ApiException {
         QueryResult queryResult;
         try (SessionsClient sessionsClient = SessionsClient.create()) {
@@ -24,7 +23,6 @@ public class DetectIntentTexts {
             DetectIntentResponse response = sessionsClient.detectIntent(session, queryInput);
 
             queryResult = response.getQueryResult();
-            System.out.println(queryResult.getIntent().getDisplayName());
         }
         return queryResult;
     }
