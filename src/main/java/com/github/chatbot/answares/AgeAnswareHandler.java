@@ -15,12 +15,6 @@ public class AgeAnswareHandler implements AnswareStrategy {
             "Claro, eu tenho 18 anos",
             "Tenho 18 anos"
     );
-
-    @Override
-    public void setUserText(String userText) {
-
-    }
-
     @Override
     public boolean hasPattern(String intentReturned){
         return checkIntent(intent, intentReturned);

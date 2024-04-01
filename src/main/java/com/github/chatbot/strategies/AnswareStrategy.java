@@ -1,7 +1,8 @@
 package com.github.chatbot.strategies;
 
+import java.io.IOException;
+
 public interface AnswareStrategy {
-    public void setUserText(String userText);
     public boolean hasPattern(String expectedIntent);
-    public String generateResponse(String userText);
+    public String generateResponse(String userText) throws IOException;
 }

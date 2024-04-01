@@ -10,25 +10,16 @@ import static com.github.chatbot.util.IntentMatcher.checkIntent;
 
 
 public class RequestWeatherAnswareHandler implements AnswareStrategy {
-
-    private String intent = "requestWeather";
+    private final String intent = "requestWeather";
     private final List<String> WEATHER = Arrays.asList(
             "Claro, me passa o nome da cidade e a data!",
             "Preciso do local e o dia",
             "Me mande o local e o dia para verificar a previsão do tempo"
     );
-
-
-    @Override
-    public void setUserText(String userText) {
-
-    }
-
     @Override
     public boolean hasPattern(String intentReturned) {
         return checkIntent(intent, intentReturned);
     }
-
     @Override
     public String generateResponse(String userText) {
         Random rand = new Random();

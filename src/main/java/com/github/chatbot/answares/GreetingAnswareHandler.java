@@ -15,17 +15,10 @@ public class GreetingAnswareHandler implements AnswareStrategy {
             "Ola! Agradeco o contato! Fico a disponha de qualquer duvida",
             "Prazer! Estou disposto a responder suas duvidas referente a mim"
     );
-
-    @Override
-    public void setUserText(String userText) {
-
-    }
-
     @Override
     public boolean hasPattern(String intentReturned){
         return checkIntent(intent, intentReturned);
     }
-
     @Override
     public String generateResponse(String userText) {
         Random rand = new Random();
